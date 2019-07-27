@@ -9,6 +9,14 @@ export const CLEAR_MOVIES = 'CLEAR_MOVIES';
 // action types for both
 export const SHOW_LOADING_SPINNER = 'SHOW_LOADING_SPINNER'; 
 
+// action creators for both
+export function showLoadingSpinner(){
+  return {
+    type: SHOW_LOADING_SPINNER,
+    payload: null
+  }
+}
+
 
 // action creators for home
 export function getPopularMovies() {
@@ -50,5 +58,12 @@ export function loadMoreMovies(searchTerm, currentPage){
   return {
     type: LOAD_MORE_MOVIES,
     payload: request
+  }
+}
+
+export function clearMovies(){
+  return {
+    type: CLEAR_MOVIES,
+    payload: null
   }
 }
