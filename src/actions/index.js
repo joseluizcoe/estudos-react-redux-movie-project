@@ -22,3 +22,33 @@ export function getPopularMovies() {
     payload: request
   }
 }
+
+export function searchMovies(searchTerm) {
+  let endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
+  if (searchTerm) {
+    endpoint = `${API_URL}search/movie?api_key=${API_KEY}&language=en-US&query=${searchTerm}`;
+  }
+  const request = fetch(endpoint)
+    .then(result => result.json())
+    .then(result => ({...result, searchTerm}))
+    .catch(error => console.error('Error:', error));
+  return {
+    type: SEARCH_MOVIES,
+    payload: request
+  }
+}
+
+export function loadMoreMovies(searchTerm, currentPage){
+  let endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=${currentPage + 1}`;
+  if (searchTerm) {
+    endpoint = `${API_URL}search/movie?api_key=${API_KEY}&language=en-US&query=${searchTerm}&page=${currentPage + 1}`;
+  }
+  const request = fetch(endpoint)
+    .then(result => result.json())
+    .then(result => ({...result, searchTerm}))
+    .catch(error => console.error('Error:', error));
+  return {
+    type: LOAD_MORE_MOVIES,
+    payload: request
+  }
+}
