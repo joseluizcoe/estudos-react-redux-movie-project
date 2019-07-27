@@ -8,7 +8,6 @@ import Spinner from '../elements/Spinner/Spinner';
 import { IMAGE_BASE_URL, POSTER_SIZE, BACKDROP_SIZE } from '../../config';
 import './Home.css';
 
-
 const Home = () => (
   <div className="rmdb-home">
     {heroImage ?
@@ -42,6 +41,6 @@ const Home = () => (
         }
       </div>
   </div>
-)
+);
 
 export default Home;
