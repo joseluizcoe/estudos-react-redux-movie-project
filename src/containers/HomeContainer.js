@@ -1,5 +1,5 @@
+import React from  'react';
 class Home extends Component {
-
   componentDidMount() {
     if (sessionStorage.getItem('HomeState')) {
       let state = JSON.parse(sessionStorage.getItem('HomeState'))
@@ -45,22 +45,7 @@ class Home extends Component {
   fetchItems = (endpoint) => {
     // ES6 Destructuring the state
     const { movies, heroImage, searchTerm } = this.state;
-
-    fetch(endpoint)
-    .then(result => result.json())
-    .then(result => {
-      this.setState({
-        movies: [...movies, ...result.results],
-        heroImage: heroImage || result.results[0],
-        loading: false,
-        currentPage: result.page,
-        totalPages: result.total_pages
-      }, () => {
-        // Remember state for the next mount if we´re not in a search view
-        if (searchTerm === "") {
-          sessionStorage.setItem('HomeState', JSON.stringify(this.state));
-        }
-      })
-    })
-    .catch(error => console.error('Error:', error))
   }
+
+
+}
