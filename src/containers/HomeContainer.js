@@ -1,23 +1,60 @@
-import React from  'react';
-class Home extends Component {
-  componentDidMount() {
-    if (sessionStorage.getItem('HomeState')) {
-      let state = JSON.parse(sessionStorage.getItem('HomeState'))
-      this.setState({ ...state })
-    } else {
-      this.setState({ loading: true })
-      const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
-      this.fetchItems(endpoint);
+import React, { Component } from  'react';
+import { connect } from 'react-redux';
+import {
+  getPopularMovies,
+  showLoadingSpinner,
+  searchMovies,
+  clearMovies,
+  loadMoreMovies,
+} from '../actions';
+import Home from '../components/Home/Home';
+
+class HomeContainer extends Component {
+    componentDidMount() {
+      this.getMovies();
     }
-  }
 
-  searchItems = (searchTerm) => {
-  }
+    getMovies = () => {
+      this.props.showLoadingSpinner();
+      this.props.getPopularMovies();
+    }
 
-  loadMoreItems = () => {
-  }
+    searchMovies = (searchTerm) => {
+      this.props.clearMovies();
+      this.props.showLoadingSpinner();
+      this.props.searchMovies(searchTerm);
+    }
 
-  fetchItems = (endpoint) => {
-  }
+    loadMoreMovies = () => {
+      const { searchTerm, currentPage } = this.props;
+      this.props.showLoadingSpinner();
+      this.props.loadMoreMovies(searchTerm, currentPage);
+    }
 
+    render() {
+      return (
+        <Home 
+          {...this.props}
+          searchMovies={this.searchMovies}
+          loadMoreMovies={this.loadMoreMovies}
+        />
+      )
+    }
 }
+
+const mapStateToProps = state => {
+  return state.home;
+}
+
+const mapDispatchToProps = {
+  getPopularMovies,
+  showLoadingSpinner,
+  searchMovies,
+  clearMovies,
+  loadMoreMovies,
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HomeContainer);

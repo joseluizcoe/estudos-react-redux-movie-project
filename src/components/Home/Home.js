@@ -8,39 +8,47 @@ import Spinner from '../elements/Spinner/Spinner';
 import { IMAGE_BASE_URL, POSTER_SIZE, BACKDROP_SIZE } from '../../config';
 import './Home.css';
 
-const Home = () => (
-  <div className="rmdb-home">
-    {heroImage ?
-      <div>
-        <HeroImage
-          image={`${IMAGE_BASE_URL}${BACKDROP_SIZE}${heroImage.backdrop_path}`}
-          title={heroImage.original_title}
-          text={heroImage.overview}
-        />
-        <SearchBar callback={this.searchItems}/>
-      </div> : null }
-      <div className="rmdb-home-grid">
-        <FourColGrid
-          header={searchTerm ? 'Search Result' : 'Popular Movies'}
-          loading={loading}
-        >
-          {movies.map( (element, i) => (
-            <MovieThumb
-              key={i}
-              clickable={true}
-              image={element.poster_path ? `${IMAGE_BASE_URL}${POSTER_SIZE}${element.poster_path}` : './images/no_image.jpg'}
-              movieId={element.id}
-              movieName={element.original_title}
-            />
-          ))}
-        </FourColGrid>
-        {loading ? <Spinner /> : null}
-        {(currentPage <= totalPages && !loading) ?
-          <LoadMoreBtn text="Load More" onClick={this.loadMoreItems} />
-          : null
-        }
-      </div>
-  </div>
-);
+const Home = (props) => {
+  const { 
+    movies, heroImage, loading,
+    currentPage, totalPages, searchTerm,
+    searchMovies, loadMoreMovies
+  } = props;
+
+  return (
+    <div className="rmdb-home">
+      {heroImage ?
+        <div>
+          <HeroImage
+            image={`${IMAGE_BASE_URL}${BACKDROP_SIZE}${heroImage.backdrop_path}`}
+            title={heroImage.original_title}
+            text={heroImage.overview}
+          />
+          <SearchBar callback={searchMovies}/>
+        </div> : null }
+        <div className="rmdb-home-grid">
+          <FourColGrid
+            header={searchTerm ? 'Search Result' : 'Popular Movies'}
+            loading={loading}
+          >
+            {movies && movies.map( (element, i) => (
+              <MovieThumb
+                key={i}
+                clickable={true}
+                image={element.poster_path ? `${IMAGE_BASE_URL}${POSTER_SIZE}${element.poster_path}` : './images/no_image.jpg'}
+                movieId={element.id}
+                movieName={element.original_title}
+              />
+            ))}
+          </FourColGrid>
+          {loading ? <Spinner /> : null}
+          {(currentPage <= totalPages && !loading) ?
+            <LoadMoreBtn text="Load More" onClick={loadMoreMovies} />
+            : null
+          }
+        </div>
+    </div>
+  );
+}
 
 export default Home;
