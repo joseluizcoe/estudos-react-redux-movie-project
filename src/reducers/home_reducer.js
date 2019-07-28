@@ -16,40 +16,34 @@ const defaultState = {
 }
 
 export default function(state=defaultState, action) {
-  const {
-    results,
-    page,
-    totalPages,
-    searchTerm
-  } = action.payload;
 
   switch(action.type) {
     case GET_POPULAR_MOVIES:
-      return {
+      return { 
         ...state,
-        movies: results,
-        heroImage: state.heroImage || results[0],
+        movies: action.payload.results,
+        heroImage: state.heroImage || action.payload.results[0],
         loading: false,
-        currentPage: page,
-        totalPages: totalPages,
+        currentPage: action.payload.page,
+        totalPages: action.payload.total_pages,
         searchTerm: ''
       }
     case LOAD_MORE_MOVIES:
       return {
         ...state,
-        movies: [...state.movies, ...results],
+        movies: [...state.movies, ...action.payload.results],
         loading:false,
-        currentPage: page,
-        totalPages: totalPages,
+        currentPage: action.payload.page,
+        totalPages: action.payload.total_pages,
       }
     case SEARCH_MOVIES:
       return {
         ...state,
-        movies: [...state.movies, ...results],
+        movies: [...state.movies, ...action.payload.results],
         loading:false,
-        currentPage: page,
-        totalPages: totalPages,
-        searchTerm: searchTerm,
+        currentPage: action.payload.page,
+        totalPages: action.payload.total_pages,
+        searchTerm: action.payload.searchTerm,
       }
     case CLEAR_MOVIES:
       return {
@@ -61,5 +55,7 @@ export default function(state=defaultState, action) {
         ...state,
         loading: true,
       }
+    default:
+      return state;
   }
 }
